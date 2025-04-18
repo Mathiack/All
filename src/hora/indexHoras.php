@@ -1,30 +1,31 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <?php
-        // Verifica se o cookie de fuso horário está definido
-        if (isset($_COOKIE['timezone'])) {
-            $timezone = $_COOKIE['timezone'];
-        } else {
-            $timezone = 'America/Sao_Paulo'; // Fuso horário padrão
-        }
+    // Verifica se o cookie de fuso horário está definido
+    if (isset($_COOKIE['timezone'])) {
+        $timezone = $_COOKIE['timezone'];
+    } else {
+        $timezone = 'America/Sao_Paulo'; // Fuso horário padrão
+    }
 
-        // Define o fuso horário com base no valor do cookie ou no padrão
-        date_default_timezone_set($timezone);
-        $hora = date('H'); // Captura a hora no fuso horário definido
+    // Define o fuso horário com base no valor do cookie ou no padrão
+    date_default_timezone_set($timezone);
+    $hora = date('H'); // Captura a hora no fuso horário definido
     ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
         <?php
-            if ($hora >= 6 && $hora < 12) {
-                $titulo = "Bom dia!";
-            } elseif ($hora >= 12 && $hora < 18) {
-                $titulo = "Boa tarde!";
-            } else {
-                $titulo = "Boa noite!";
-            }
-            echo $titulo;
+        if ($hora >= 6 && $hora < 12) {
+            $titulo = "Bom dia!";
+        } elseif ($hora >= 12 && $hora < 18) {
+            $titulo = "Boa tarde!";
+        } else {
+            $titulo = "Boa noite!";
+        }
+        echo $titulo;
         ?>
     </title>
     <link rel="stylesheet" href="../../styles/styleHoras.css">
@@ -50,16 +51,16 @@
 
             // Faz requisição para obter a hora no novo fuso horário
             fetch('update_timezone.php?timezone=' + fuso)
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('hora').innerText = data.hora; // Atualiza a hora
-                document.getElementById('data').innerText = data.data; // Atualiza a data
-            })
-            .catch(error => console.error('Erro ao atualizar fuso horário:', error));
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('hora').innerText = data.hora; // Atualiza a hora
+                    document.getElementById('data').innerText = data.data; // Atualiza a data
+                })
+                .catch(error => console.error('Erro ao atualizar fuso horário:', error));
         }
 
         // Carrega o fuso horário do cookie ao carregar a página
-        window.onload = function() {
+        window.onload = function () {
             const fusoSalvo = getCookie('timezone');
             if (fusoSalvo) {
                 document.getElementById('timezone').value = fusoSalvo; // Define a opção selecionada
@@ -84,26 +85,27 @@
             return color;
         }
 
-        document.addEventListener('keydown', function(event) { // faz o espaço mudar as background
-            if (event.code === 'Space') {  
+        document.addEventListener('keydown', function (event) { // faz o espaço mudar as background
+            if (event.code === 'Space') {
                 const randomColor = getRandomColor();
                 document.body.style.backgroundColor = randomColor;
             }
         });
     </script>
 </head>
+
 <body>
     <div id="hora">
         <p>
             <?php
-                echo date('H:i:s'); // Exibindo a hora inicial no fuso horário definido
+            echo date('H:i:s'); // Exibindo a hora inicial no fuso horário definido
             ?>
         </p>
     </div>
     <div id="data">
         <p>
             <?php
-                echo date('d/m/Y'); // Exibindo a data
+            echo date('d/m/Y'); // Exibindo a data
             ?>
         </p>
     </div>
@@ -115,5 +117,11 @@
             <option value="America/Manaus">América do Sul/Amazonas</option>
         </select>
     </div>
+    
+
+    <div class="cantoEsquerdo">
+        <button class="btnCantoEsquerdo"><a href="../../index.html">Voltar</a></button>
+    </div>
 </body>
+
 </html>
