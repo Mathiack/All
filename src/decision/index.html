@@ -72,6 +72,29 @@
             font-style: italic;
             color: #f9f9f9;
         }
+
+        .btnCantoEsquerdo {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            padding: 10px 16px;
+            background-color: aqua;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: black;
+            cursor: pointer;
+            max-width: 200px;
+            width: auto;
+            white-space: nowrap;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
+
+        .btnCantoEsquerdo:hover {
+            background-color: #00cccc;
+        }
     </style>
 </head>
 
@@ -100,12 +123,14 @@
                 <option value="Bashilho">Bashilho</option>
                 <option value="Elisandra">Elisandra</option>
                 <option value="Saddam Hussein">Saddam Hussein</option>
+                <option value="Simpson Gamer">Simpson Gamer</option>
             </select>
 
             <label for="local">Lugar:</label>
             <select id="local">
                 <option value="Senaqer">Senaqer</option>
                 <option value="House">House</option>
+                <option value="Vila Willy">Vila Willy</option>
                 <option value="Praça Daltro Filho">Praça Daltro Filho</option>
                 <option value="Rua Santo Bergamin">Rua Santo Bergamin</option>
                 <option value="Mantova">Mantova</option>
@@ -119,7 +144,8 @@
                 <option value="um celular que reproduz algo continuamente">Celular maluco</option>
                 <option value="um código Portugol na Unity">Código Portugol na Unity</option>
                 <option value="um contrabaixo afinadamente desafinado">Contrabaixo afinadamente desafinado</option>
-                <option value="um capacete do Max Verstappen com uma latinha de RedBull">Capacete do Max Verstappen</option>
+                <option value="um capacete do Max Verstappen com uma latinha de RedBull">Capacete do Max Verstappen
+                </option>
                 <option value="um tênis Fila Racer Speedzone">Tênis Fila Racer Speedzone</option>
                 <option value="um Golf 2011 branco com porta-malas caindo">Golf 2011 branco</option>
                 <option value="um caderno">Caderno</option>
@@ -130,7 +156,9 @@
             <select id="acao">
                 <option value="votou 13 (bad ending)">Votar 13 (bad ending)</option>
                 <option value="codou em HTML e CSS">Codar em HTML e CSS</option>
-                <option value="trocou Laravel por HardCoding + VibeCoding + adrenalina (sigma ending)">Trocar Laravel</option>
+                <option value="ordenado pelo Tutor, fez um teste em Selenium">Fez um teste em Selenium</option>
+                <option value="trocou Laravel por HardCoding + VibeCoding + adrenalina (sigma ending)">Trocar Laravel
+                </option>
                 <option value="foi para Treza">Ir para Treza</option>
                 <option value="correu com o Tutor">Correr com o Tutor</option>
                 <option value="codou em Java (good ending)">Codar em Java (good ending)</option>
@@ -149,6 +177,10 @@
 
         <div id="historia"></div>
     </main>
+
+    <div class="cantoEsquerdo">
+        <button class="btnCantoEsquerdo" onclick="window.location.href='../../index.html'">Voltar</button>
+    </div>
 
     <script>
         function criarHistoria() {
