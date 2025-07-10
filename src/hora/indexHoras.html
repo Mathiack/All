@@ -2,96 +2,106 @@
 <html lang="pt-br">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title id="titulo">Carregando...</title>
-    <link rel="stylesheet" href="../../styles/styleHoras.css" />
-    <script>
-        function getCookie(name) {
-            const cookies = document.cookie.split(';');
-            for (let cookie of cookies) {
-                const [key, value] = cookie.trim().split('=');
-                if (key === name) return decodeURIComponent(value);
-            }
-            return undefined;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="titulo">Carregando...</title>
+  <link rel="stylesheet" href="../../styles/styleHoras.css" />
+  <script>
+    function getCookie(name) {
+      const cookies = document.cookie.split(';');
+      for (let cookie of cookies) {
+        const [key, value] = cookie.trim().split('=');
+        if (key === name) return decodeURIComponent(value);
+      }
+      return undefined;
+    }
 
-        function setCookie(name, value) {
-            document.cookie = `${name}=${encodeURIComponent(value)}; path=/`;
-        }
+    function setCookie(name, value) {
+      document.cookie = `${name}=${encodeURIComponent(value)}; path=/`;
+    }
 
-        function getTimeData(timezone) {
-            const now = new Date();
+    function getTimeData(timezone) {
+      const now = new Date();
 
-            const timeStr = now.toLocaleTimeString('pt-BR', {
-                timeZone: timezone,
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false,
-            });
+      const timeStr = now.toLocaleTimeString('pt-BR', {
+        timeZone: timezone,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+      });
 
-            const dateStr = now.toLocaleDateString('pt-BR', {
-                timeZone: timezone,
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-            });
+      const dateStr = now.toLocaleDateString('pt-BR', {
+        timeZone: timezone,
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+      });
 
-            const hour = parseInt(timeStr.split(':')[0], 10);
-            let titulo = 'Boa noite!';
-            if (hour >= 6 && hour < 12) titulo = 'Bom dia!';
-            else if (hour >= 12 && hour < 18) titulo = 'Boa tarde!';
+      const hour = parseInt(timeStr.split(':')[0], 10);
+      let titulo = 'Boa noite!';
+      if (hour >= 6 && hour < 12) titulo = 'Bom dia!';
+      else if (hour >= 12 && hour < 18) titulo = 'Boa tarde!';
 
-            return { timeStr, dateStr, titulo };
-        }
+      return { timeStr, dateStr, titulo };
+    }
 
-        function atualizarHoraData() {
-            const timezone = getCookie('timezone') || 'America/Sao_Paulo';
-            const { timeStr, dateStr, titulo } = getTimeData(timezone);
+    function atualizarHoraData() {
+      const timezone = getCookie('timezone') || 'America/Sao_Paulo';
+      const { timeStr, dateStr, titulo } = getTimeData(timezone);
 
-            document.title = titulo;
-            document.getElementById('hora').textContent = timeStr;
-            document.getElementById('data').textContent = dateStr;
-        }
+      document.title = titulo;
+      document.getElementById('hora').textContent = timeStr;
+      document.getElementById('data').textContent = dateStr;
+    }
 
-        function salvarFusoHorario(fuso) {
-            setCookie('timezone', fuso);
-            atualizarHoraData();
-        }
+    function salvarFusoHorario(fuso) {
+      setCookie('timezone', fuso);
+      atualizarHoraData();
+    }
 
-        function getRandomColor() {
-            const letters = '0123456789ABCDEF';
-            let color = '#';
-            for (let i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-            return color;
-        }
+    function getRandomColor() {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
 
-        window.onload = () => {
-            const select = document.getElementById('timezone');
-            const savedTZ = getCookie('timezone') || 'America/Sao_Paulo';
-            select.value = savedTZ;
-            atualizarHoraData();
-            setInterval(atualizarHoraData, 1000);
-        };
+    window.onload = () => {
+      const select = document.getElementById('timezone');
+      const savedTZ = getCookie('timezone') || 'America/Sao_Paulo';
+      if (select) {
+        select.value = savedTZ;
+      }
+      atualizarHoraData();
+      setInterval(atualizarHoraData, 1000);
+    };
 
-        document.addEventListener('keydown', function (event) {
-            if (event.code === 'Space') {
-                document.body.style.backgroundColor = getRandomColor();
-            }
-        });
-    </script>
+    document.addEventListener('keydown', function (event) {
+      if (event.code === 'Space') {
+        document.body.style.backgroundColor = getRandomColor();
+      }
+    });
+  </script>
 </head>
 
 <body>
-    <div id="hora"></div>
-    <div id="data"></div>
+  <h1 id="hora">--:--:--</h1>
+  <p id="data">--/--/----</p>
 
-    <div class="cantoEsquerdo">
-        <button class="btnCantoEsquerdo"><a href="../../index.html">Voltar</a></button>
-    </div>
+  <label for="timezone">Fuso horário:</label>
+  <select id="timezone" onchange="salvarFusoHorario(this.value)">
+    <option value="America/Sao_Paulo">São Paulo</option>
+    <option value="America/New_York">Nova York</option>
+    <option value="Europe/Lisbon">Lisboa</option>
+    <option value="Asia/Tokyo">Tóquio</option>
+  </select>
+
+  <div class="cantoEsquerdo">
+    <button class="btnCantoEsquerdo"><a href="../../index.html">Voltar</a></button>
+  </div>
 </body>
 
 </html>
