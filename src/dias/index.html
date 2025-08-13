@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de Datas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #121212;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        section {
+            border: 1px solid #444;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 8px;
+            background: #1e1e1e;
+            width: 300px;
+        }
+
+        input,
+        button {
+            margin: 5px 0;
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button {
+            font-style: bold;
+        }
+
+        button {
+            background: #693668;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #412140;
+        }
+
+        .btnCantoEsquerdo {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            padding: 10px 16px;
+            background-color: #693668;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: black;
+            cursor: pointer;
+            max-width: 200px;
+            width: auto;
+            white-space: nowrap;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
+
+        .btnCantoEsquerdo:hover {
+            background-color: #412140;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Calculadora de Datas</h1>
+
+    <section>
+        <h2>Tempo até uma data</h2>
+        <input type="date" id="dataAlvo">
+        <button onclick="calcularTempo()">Calcular</button>
+        <p id="resultado1"></p>
+    </section>
+
+    <section>
+        <h2>Dia daqui a X dias</h2>
+        <input type="number" id="diasAdicionar" placeholder="Digite a quantidade de dias">
+        <button onclick="calcularDataFutura()">Calcular</button>
+        <p id="resultado2"></p>
+    </section>
+
+    <div class="cantoEsquerdo">
+        <button class="btnCantoEsquerdo" onclick="window.location.href='../../index.html'">Voltar</button>
+    </div>
+
+    <script>
+        function calcularTempo() {
+            const inputData = document.getElementById("dataAlvo").value;
+            const resultado = document.getElementById("resultado1");
+
+            if (!inputData) {
+                resultado.textContent = "Por favor, selecione uma data.";
+                return;
+            }
+
+            const hoje = new Date();
+            const alvo = new Date(inputData);
+
+            hoje.setHours(0, 0, 0, 0);
+            alvo.setHours(0, 0, 0, 0);
+
+            const diffMs = alvo - hoje;
+            const diffDias = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+            if (diffDias > 0) {
+                resultado.textContent = `Faltam ${diffDias} dia(s) para ${alvo.toLocaleDateString("pt-BR")}.`;
+            } else if (diffDias === 0) {
+                resultado.textContent = "É hoje!";
+            } else {
+                resultado.textContent = `Essa data já passou há ${Math.abs(diffDias)} dia(s).`;
+            }
+        }
+
+        function calcularDataFutura() {
+            const dias = parseInt(document.getElementById("diasAdicionar").value, 10);
+            const resultado = document.getElementById("resultado2");
+
+            if (isNaN(dias) || dias < 0) {
+                resultado.textContent = "Digite um número válido de dias.";
+                return;
+            }
+
+            const hoje = new Date();
+            hoje.setHours(0, 0, 0, 0);
+
+            const dataFutura = new Date(hoje);
+            dataFutura.setDate(dataFutura.getDate() + dias);
+
+            resultado.textContent = `Daqui a ${dias} dia(s) será ${dataFutura.toLocaleDateString("pt-BR")}.`;
+        }
+    </script>
+
+</body>
+
+</html>
