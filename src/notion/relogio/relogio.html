@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contagem Regressiva Configurável</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .dark {
+            background-color: #2F3437; /* Notion dark bg */
+            color: #FFFFFF; /* Notion dark text */
+        }
+        .light {
+            background-color: #FFFFFF; /* Notion light bg */
+            color: #000000; /* Notion light text */
+        }
+        #container {
+            padding: 20px;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+        .dark #container {
+            background-color: #373C3F; /* Dark highlight */
+        }
+        .light #container {
+            background-color: #F1F1F1; /* Light highlight */
+        }
+        #title {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        #countdown {
+            font-size: 48px;
+            font-weight: bold;
+        }
+        #settings-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        #settings {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            z-index: 10;
+            width: 300px;
+        }
+        .dark #settings {
+            background-color: #373C3F;
+            color: #FFFFFF;
+        }
+        .light #settings {
+            background-color: #F1F1F1;
+            color: #000000;
+        }
+        input, select {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="dark"> <!-- Tema padrão: dark -->
+    <div id="container">
+        <div id="title">Meu Evento Especial</div>
+        <div id="countdown">Carregando...</div>
+    </div>
+    <div id="settings-btn">⚙️</div>
+    <div id="settings">
+        <h3>Configurações</h3>
+        <label>Título:</label>
+        <input type="text" id="new-title" placeholder="Digite o título">
+        <label>Data Alvo:</label>
+        <input type="datetime-local" id="new-date">
+        <label>Tema:</label>
+        <select id="new-theme">
+            <option value="dark">Escuro</option>
+            <option value="light">Claro</option>
+        </select>
+        <button id="save-btn">Salvar</button>
+    </div>
+
+    <script>
+        // Carrega configurações do localStorage ou defaults
+        let targetDate = localStorage.getItem('targetDate') ? new Date(localStorage.getItem('targetDate')) : new Date('2024-12-31T23:59:59');
+        let title = localStorage.getItem('title') || 'Meu Evento Especial';
+        let theme = localStorage.getItem('theme') || 'dark';
+
+        document.getElementById('title').innerHTML = title;
+        document.body.className = theme;
+        document.getElementById('new-title').value = title;
+        document.getElementById('new-date').value = targetDate.toISOString().slice(0, 16);
+        document.getElementById('new-theme').value = theme;
+
+        function updateCountdown() {
+            const now = new Date();
+            const difference = targetDate - now;
+
+            if (difference > 0) {
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+                document.getElementById('countdown').innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            } else {
+                document.getElementById('countdown').innerHTML = 'Tempo esgotado!';
+            }
+        }
+
+        // Atualiza a cada segundo
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Abre/fecha configurações
+        document.getElementById('settings-btn').addEventListener('click', () => {
+            const settings = document.getElementById('settings');
+            settings.style.display = settings.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Salva mudanças
+        document.getElementById('save-btn').addEventListener('click', () => {
+            title = document.getElementById('new-title').value || 'Meu Evento Especial';
+            const newDateStr = document.getElementById('new-date').value;
+            targetDate = newDateStr ? new Date(newDateStr) : targetDate;
+            theme = document.getElementById('new-theme').value;
+
+            localStorage.setItem('title', title);
+            localStorage.setItem('targetDate', targetDate.toISOString());
+            localStorage.setItem('theme', theme);
+
+            document.getElementById('title').innerHTML = title;
+            document.body.className = theme;
+            document.getElementById('settings').style.display = 'none';
+            updateCountdown();
+        });
+    </script>
+</body>
+</html>
